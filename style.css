@@ -4,6 +4,20 @@ body {
     background: url('./graphics/background.png');
 }
 
+header {
+    background-color:blue;
+    text-align : center;
+}
+
+#search-input {
+    border-color: blue;
+    font-size: 14px;
+    font-weight: 100;
+    width: 80%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding: 15px}
+
 #food-type-facet-list,
 #rating-facet-list,
 #payment-options-facet-list,
