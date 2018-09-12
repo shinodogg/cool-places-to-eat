@@ -4,7 +4,10 @@ var helper = algoliasearchHelper(client, 'restaurants', {
 });
 
 helper.on('result', function(content) {
-    renderFacetList(content);
+    console.log(content)
+    renderFoodTypeFacetList(content);
+    renderRatingFacetList(content);
+    renderPaymentOptionsFacetList(content);
     renderHits(content);
 });
     
@@ -16,16 +19,50 @@ function renderHits(content) {
     });
 }
 
-$('#facet-list').on('click', 'input[type=checkbox]', function(e) {
+$('#food-type-facet-list').on('click', 'input[type=checkbox]', function(e) {
     var facetValue = $(this).data('facet');  
-    helper.toggleRefinement('food_type', facetValue)
-.search();
+    helper.toggleRefinement('food_type', facetValue).search();
 });
-  
-function renderFacetList(content) {
 
-    $('#facet-list').html(function() {
+$('#rating-facet-list').on('click', 'input[type=checkbox]', function(e) {
+    var facetValue = $(this).data('facet');  
+    helper.toggleRefinement('stars_count', facetValue).search();
+});
+
+$('#payment-options-facet-list').on('click', 'input[type=checkbox]', function(e) {
+    var facetValue = $(this).data('facet');  
+    helper.toggleRefinement('payment_options', facetValue).search();
+});
+
+function renderFoodTypeFacetList(content) {
+    $('#food-type-facet-list').html(function() {
         return $.map(content.getFacetValues('food_type'), function(facet) {
+            var checkbox = $('<input type=checkbox>')
+            .data('facet', facet.name)
+            .attr('id', 'fl-' + facet.name);
+            if(facet.isRefined) checkbox.attr('checked', 'checked');
+                var label = $('<label>').html(facet.name + ' (' + facet.count + ')').attr('for', 'fl-' + facet.name);
+                return $('<li>').append(checkbox).append(label);
+        });
+    });
+}
+
+function renderRatingFacetList(content) {
+    $('#rating-facet-list').html(function() {
+        return $.map(content.getFacetValues('stars_count'), function(facet) {
+            var checkbox = $('<input type=checkbox>')
+            .data('facet', facet.name)
+            .attr('id', 'fl-' + facet.name);
+            if(facet.isRefined) checkbox.attr('checked', 'checked');
+                var label = $('<label>').html(facet.name + ' (' + facet.count + ')').attr('for', 'fl-' + facet.name);
+                return $('<li>').append(checkbox).append(label);
+        });
+    });
+}
+
+function renderPaymentOptionsFacetList(content) {
+    $('#payment-options-facet-list').html(function() {
+        return $.map(content.getFacetValues('payment_options'), function(facet) {
             var checkbox = $('<input type=checkbox>')
             .data('facet', facet.name)
             .attr('id', 'fl-' + facet.name);

@@ -4,7 +4,9 @@ body {
     background: url('./graphics/background.png');
 }
 
-#facet-list,
+#food-type-facet-list,
+#rating-facet-list,
+#payment-options-facet-list,
 #container{
   max-width: 150px;
   width: 100%;
