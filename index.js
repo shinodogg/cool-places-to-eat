@@ -1,6 +1,6 @@
 var client = algoliasearch('0D35MPIESS', '269bebdf2db38b7df40e31b436903866');
 var helper = algoliasearchHelper(client, 'restaurants', {
-    facets: ['food_type', 'stars_int', 'payment_options']
+    hitsPerPage: 3, facets: ['food_type', 'stars_int', 'payment_options']
 });
 
 helper.on('result', function(content) {
@@ -13,7 +13,7 @@ helper.on('result', function(content) {
     
 function renderHits(content) {
     $('#stats').html(function() {
-        return content.nbHits + ' found results found in ' + content.processingTimeMS
+        return content.nbHits + ' found results found in ' + content.processingTimeMS + ' millisecond(s)'
     });
     $('#container').html(function() {
         return $.map(content.hits, function(hit) {
@@ -97,6 +97,25 @@ function renderPaymentOptionsFacetList(content) {
 
 $('#search-input').on('keyup', function() {
     helper.setQuery($(this).val()).search();
+});
+
+$('#show-more').click(function() {
+    var value = $(this).val();
+    if(value === 'Show More') {
+        helper.searchOnce({hitsPerPage: 6}, function(error, content, state) {
+            renderHits(content);
+        });
+        $('#show-more').html(function() {        
+            $(this).val('Show Less');
+        });
+    } else {
+        helper.searchOnce({hitsPerPage: 3}, function(error, content, state) {
+            renderHits(content);
+        });
+        $('#show-more').html(function() {        
+            $(this).val('Show More');
+        });
+    }
 });
 
 helper.search();
