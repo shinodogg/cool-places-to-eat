@@ -28,6 +28,8 @@ aside {
     float:left;
     width: 240px;
     margin-left: 40px;
+    display:block;
+
 }
 
 article {
@@ -43,6 +45,12 @@ footer {
     text-align: center;
     padding: 5px;
     font-size: 80%;
+}
+
+#cuisine-filter, #stars-filter, #payment-filter {
+    float: left;
+
+    width: 240px;
 }
 
 #search-input {

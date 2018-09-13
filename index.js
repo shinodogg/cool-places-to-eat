@@ -1,10 +1,23 @@
+var latLng
+navigator.geolocation.getCurrentPosition(
+    function(position) {
+        var currentLat = position.coords.latitude
+        var currentLng = position.coords.longitude
+        latLng = `${currentLat}, ${currentLng}`;
+        console.log(latLng);
+});
+
 var client = algoliasearch('0D35MPIESS', '269bebdf2db38b7df40e31b436903866');
 var helper = algoliasearchHelper(client, 'restaurants', {
-    hitsPerPage: 3, facets: ['food_type', 'stars_int', 'payment_options']
+    hitsPerPage: 3,
+    facets: ['food_type', 'stars_int', 'payment_options'],
+    //aroundLatLng: latLng,
+    //aroundLatLng: "35.6333939, 139.7169116",
+    //aroundLatLng: "34.0522, 118.2437",
+    aroundRadius: 'all'
 });
 
 helper.on('result', function(content) {
-    console.log(content)
     renderFoodTypeFacetList(content);
     renderRatingFacetList(content);
     renderPaymentOptionsFacetList(content);
@@ -12,12 +25,17 @@ helper.on('result', function(content) {
 });
     
 function renderHits(content) {
+    console.log(content)
     $('#stats').html(function() {
-        return content.nbHits + ' found results found in ' + content.processingTimeMS + ' millisecond(s)'
+        return '<h5>' + content.nbHits + ' found results found in ' + content.processingTimeMS + ' millisecond(s)' + '<h5>'
     });
-    $('#container').html(function() {
+    $('#search-result').html(function() {
         return $.map(content.hits, function(hit) {
-            return '<li>' + hit._highlightResult.name.value + '</li>';
+            return '<table><tr><td rowspan="3"><img src="' 
+                + hit.image_url + '" /></td><td>' 
+                + hit._highlightResult.name.value + '</td></tr><tr><td>' 
+                + hit.stars_count + '</td></tr><tr><td>' 
+                + hit.food_type + '</td></tr></table>';
         });
     });
 }
