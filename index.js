@@ -6,6 +6,7 @@ var parameters = {
 var helper = algoliasearchHelper(client, 'restaurants', parameters);
 
 helper.on('result', function(content) {
+    console.log(content);
     renderFoodTypeFacetList(content);
     renderRatingFacetList(content);
     renderPaymentOptionsFacetList(content);
@@ -51,8 +52,20 @@ function renderHits(content) {
                 + hit.image_url + '" width="125px" /></td><td>' 
                 + hit._highlightResult.name.value + '</td></tr><tr><td>' 
                 + hit.stars_count + ' ' + getRatingStars(hit.stars_int) + ' (' + hit.reviews_count + ' reviews)' +'</td></tr><tr><td>' 
-                + hit.food_type + ' | ' + hit.area + ' | ' + hit.price_range + '</td></tr></table>';
+                + hit.food_type + ' | ' + hit.area + ' | ' + hit.price_range + '</td></tr></table>'
         });
+    });
+    $('#show-more-or-less').html(function() {
+        if (content.nbHits <= 3) {
+            return ''
+        }
+        if (Object.keys(content.hits).length == 3) {
+            return '<input id="show-more" type="button" value="Show More" />'
+        } else if (Object.keys(content.hits).length <= 6) {
+            return '<input id="show-more" type="button" value="Show Less" />'
+        } else {
+            return ''
+        }
     });
 }
 
@@ -138,20 +151,14 @@ $('#search-input').on('keyup', function() {
     helper.setQuery($(this).val()).search();
 });
 
-$('#show-more').click(function() {
-    var value = $(this).val();
+$(document).on('click', '#show-more', function() {
+    var value = $('#show-more').val();
     if(value === 'Show More') {
         helper.setQueryParameter('hitsPerPage', 6);
         helper.search();            
-        $('#show-more').html(function() {        
-            $(this).val('Show Less');
-        });    
     } else {
         helper.setQueryParameter('hitsPerPage', 3);
         helper.search();            
-        $('#show-more').html(function() {        
-            $(this).val('Show More');
-        });
     }
 });
 
