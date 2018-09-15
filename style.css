@@ -6,10 +6,9 @@ body {
     background: url('./graphics/background.png');
 }
 
-header, article, aside, footer {
+header, article, aside {
     display:block;
     border:1px solid #ccc;
-    margin:0px 0px 10px;
     padding:20px;
 }
 
@@ -17,7 +16,6 @@ header {
     background-color:blue;
     text-align : center;
     margin-top: 20px;
-    margin-bottom: 20px;
     margin-right: 40px;
     margin-left: 40px;
     padding: 15px;
@@ -43,7 +41,7 @@ article {
 footer {
     clear:both;
     text-align: center;
-    padding: 5px;
+    padding: 15px;
     font-size: 80%;
 }
 
@@ -51,6 +49,10 @@ footer {
     float: left;
 
     width: 240px;
+}
+
+#show-more-or-less {
+    text-align: center;
 }
 
 #search-input {
