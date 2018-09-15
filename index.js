@@ -1,13 +1,11 @@
 var client = algoliasearch('0D35MPIESS', '269bebdf2db38b7df40e31b436903866');
-var perPageCount = 3;
 var parameters = {
-    hitsPerPage: perPageCount, 
+    hitsPerPage: 3, 
     facets: ['food_type', 'stars_int', 'payment_options']
 };
 var helper = algoliasearchHelper(client, 'restaurants', parameters);
 
 helper.on('result', function(content) {
-    console.log(content)
     renderFoodTypeFacetList(content);
     renderRatingFacetList(content);
     renderPaymentOptionsFacetList(content);
@@ -20,39 +18,28 @@ if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
         function(position) {
             latLng = `${position.coords.latitude}, ${position.coords.longitude}`;
-            parameters =  {
-                hitsPerPage: 3, 
-                facets: ['food_type', 'stars_int', 'payment_options'],
-                aroundLatLng: latLng,
-                aroundRadius: 'all'
-            };
-            helper.searchOnce(parameters).then(function(res) {
-                content = res.content;
-                renderFoodTypeFacetList(res.content);
-                renderRatingFacetList(res.content);
-                renderPaymentOptionsFacetList(res.content);
-                renderHits(res.content);            
-            });
+            helper.setQueryParameter('aroundLatLng', latLng);
+            helper.setQueryParameter('aroundRadius', 'all');
+            helper.search();            
         },
-    function(error) {
-        switch(error.code) {
-          case 1:
-            console.log("PERMISSION_DENIED");
+        function(error) {
+            switch(error.code) {
+            case 1:
+                console.log("PERMISSION_DENIED");
+                break;
+            case 2:
+                console.log("POSITION_UNAVAILABLE");
             break;
-          case 2:
-            console.log("POSITION_UNAVAILABLE");
-          break;
-          case 3:
-            console.log("TIMEOUT");
-            break;
-          default:
-            alert(error.code);
-            break;
+            case 3:
+                console.log("TIMEOUT");
+                break;
+            default:
+                alert(error.code);
+                break;
+            }
         }
-      }
     );
 }
-
     
 function renderHits(content) {
     $('#stats').html(function() {
@@ -68,7 +55,6 @@ function renderHits(content) {
         });
     });
 }
-
 
 $('#food-type-facet-list').on('click', 'input[type=checkbox]', function(e) {
     var facetValue = $(this).data('facet');  
@@ -149,37 +135,20 @@ function renderPaymentOptionsFacetList(content) {
 }
 
 $('#search-input').on('keyup', function() {
-    console.log("search-input");
-    console.dir(parameters);
-    helper.setQuery($(this).val()).search(parameters);
+    helper.setQuery($(this).val()).search();
 });
 
 $('#show-more').click(function() {
     var value = $(this).val();
     if(value === 'Show More') {
-        perPageCount += 3
-        parameters.hitsPerPage = perPageCount;
-        helper.searchOnce(parameters).then(function(res) {
-            content = res.content;
-            renderFoodTypeFacetList(res.content);
-            renderRatingFacetList(res.content);
-            renderPaymentOptionsFacetList(res.content);
-            renderHits(res.content);            
-        });
-
+        helper.setQueryParameter('hitsPerPage', 6);
+        helper.search();            
         $('#show-more').html(function() {        
             $(this).val('Show Less');
         });    
     } else {
-        perPageCount -= 3
-        parameters.hitsPerPage = perPageCount;
-        helper.searchOnce(parameters).then(function(res) {
-            content = res.content;
-            renderFoodTypeFacetList(res.content);
-            renderRatingFacetList(res.content);
-            renderPaymentOptionsFacetList(res.content);
-            renderHits(res.content);            
-        });
+        helper.setQueryParameter('hitsPerPage', 3);
+        helper.search();            
         $('#show-more').html(function() {        
             $(this).val('Show More');
         });
