@@ -1,9 +1,7 @@
 require 'json'
 require 'csv'
 
-restaurants_list = open('dataset/restaurants_list.json') do |io|
-    JSON.load(io)
-end
+restaurants_list = open('dataset/restaurants_list.json') do |io| JSON.load(io) end
 restaurants_info = CSV.read('dataset/restaurants_info.csv', headers: true, col_sep: ";")
 
 restaurant_array = []

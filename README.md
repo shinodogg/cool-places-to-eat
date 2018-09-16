@@ -1,12 +1,14 @@
 Cool Places to Eat!
 ====
 
-Overview
+Please check at the following url
+
+<https://shinodogg.github.io/cool-places-to-eat/>
 
 ## Description
 
-Rebsite for finding restaurants
+Website for finding restaurants with Algolia Search
 
 ## Author
 
-Eiji Shinohara
+Eiji Shinohara [@shinodogg](https://twitter.com/shinodogg)

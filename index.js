@@ -7,10 +7,10 @@ var parameters = {
 var helper = algoliasearchHelper(client, 'restaurants', parameters);
 
 helper.on('result', function (content) {
+    renderHits(content);
     renderFoodTypeFacetList(content);
     renderRatingFacetList(content);
     renderPaymentOptionsFacetList(content);
-    renderHits(content);
 });
 
 helper.search();
@@ -24,18 +24,10 @@ if (navigator.geolocation) {
         },
         function (error) {
             switch (error.code) {
-                case 1:
-                    // console.log("PERMISSION_DENIED");
-                    break;
-                case 2:
-                    // console.log("POSITION_UNAVAILABLE");
-                    break;
-                case 3:
-                    // console.log("TIMEOUT");
-                    break;
-                default:
-                    // alert(error.code);
-                    break;
+                case 1: /** console.log("PERMISSION_DENIED"); */ break;
+                case 2: /** console.log("POSITION_UNAVAILABLE"); */ break;
+                case 3: /** console.log("TIMEOUT"); */ break;
+                default: /** alert(error.code); */ break;
             }
         }
     );
@@ -56,11 +48,13 @@ function renderHits(content) {
             if (ua.indexOf('iphone') > 0 || ua.indexOf('ipod') > 0 || ua.indexOf('android') > 0 && ua.indexOf('mobile') > 0) {
                 linkUrl = hit.mobile_reserve_url;
             }
-            return '<a href="' + linkUrl + '" target="_blank" rel="noopener"><table><tr><td rowspan="3"><img src="'
-                + hit.image_url + '" width="125px" /></td><td>'
-                + hit._highlightResult.name.value + '</td></tr><tr><td>'
-                + hit.stars_count + ' ' + getRatingStars(hit.stars_int) + ' (' + hit.reviews_count + ' reviews)' + '</td></tr><tr><td>'
-                + hit._highlightResult.food_type.value + ' | ' + hit._highlightResult.area.value + ' | ' + hit.price_range + '</td></tr></table></a>'
+            return '<a href="' + linkUrl + '" target="_blank" rel="noopener">'
+                + '<table><tbody>'
+                + '<tr><td rowspan="3"><img src="' + hit.image_url + '" width="100px" /></td><td>' + hit._highlightResult.name.value + '</td></tr>'
+                + '<tr><td>' + hit.stars_count + ' ' + getRatingStars(hit.stars_int) + ' (' + hit.reviews_count + ' reviews)' + '</td></tr>'
+                + '<tr><td>' + hit._highlightResult.food_type.value + ' | ' + hit._highlightResult.area.value + ' | ' + hit.price_range + '</td></tr>'
+                + '</tbody></table>'
+                + '</a>'
         });
     });
     $('#show-more-or-less').html(function () {
@@ -77,21 +71,6 @@ function renderHits(content) {
     });
 }
 
-$('#food-type-facet-list').on('click', 'input[type=checkbox]', function () {
-    var facetValue = $(this).data('facet');
-    helper.toggleRefinement('food_type', facetValue).search();
-});
-
-$('#rating-facet-list').on('click', 'input[type=checkbox]', function () {
-    var facetValue = $(this).data('facet');
-    helper.toggleRefinement('stars_int', facetValue).search();
-});
-
-$('#payment-options-facet-list').on('click', 'input[type=checkbox]', function () {
-    var facetValue = $(this).data('facet');
-    helper.toggleRefinement('payment_options', facetValue).search();
-});
-
 function renderFoodTypeFacetList(content) {
     $('#food-type-facet-list').html(function () {
         var i = 0;
@@ -100,9 +79,7 @@ function renderFoodTypeFacetList(content) {
             if (i > 6) {
                 return false
             }
-            var checkbox = $('<input type=checkbox>')
-                .data('facet', facet.name)
-                .attr('id', 'fl-' + facet.name);
+            var checkbox = getCheckbox(facet);
             if (facet.isRefined) checkbox.attr('checked', 'checked');
             var label = $('<label>').html(facet.name + ' (' + facet.count + ')').attr('for', 'fl-' + facet.name);
             return $('<li>').append(checkbox).append(label);
@@ -119,15 +96,36 @@ function renderRatingFacetList(content) {
             return 0;
         });
         return $.map(stars, function (facet) {
-            var checkbox = $('<input type=checkbox>')
-                .data('facet', facet.name)
-                .attr('id', 'fl-' + facet.name);
+            var checkbox = getCheckbox(facet);
             if (facet.isRefined) checkbox.attr('checked', 'checked');
             var stars = getRatingStars(facet.name);
             var label = $('<label>').html(stars + ' (' + facet.count + ')').attr('for', 'fl-' + facet.name);
             return $('<li>').append(checkbox).append(label);
         });
     });
+}
+
+function renderPaymentOptionsFacetList(content) {
+    $('#payment-options-facet-list').html(function () {
+        var paymentOptions = content.getFacetValues('payment_options');
+        paymentOptions.sort(function (a, b) {
+            if (a.name < b.name) { return -1; }
+            if (a.name > b.name) { return 1; }
+            return 0;
+        });
+        return $.map(paymentOptions, function (facet) {
+            var checkbox = getCheckbox(facet);
+            if (facet.isRefined) checkbox.attr('checked', 'checked');
+            var label = $('<label>').html(facet.name + ' (' + facet.count + ')').attr('for', 'fl-' + facet.name);
+            return $('<li>').append(checkbox).append(label);
+        });
+    });
+}
+
+function getCheckbox(facet) {
+    return $('<input type=checkbox>')
+        .data('facet', facet.name)
+        .attr('id', 'fl-' + facet.name);
 }
 
 function getRatingStars(num) {
@@ -159,28 +157,23 @@ function getRatingStars(num) {
     }
 }
 
-function renderPaymentOptionsFacetList(content) {
-    $('#payment-options-facet-list').html(function () {
-        var paymentOptions = content.getFacetValues('payment_options');
-        paymentOptions.sort(function (a, b) {
-            if (a.name < b.name) { return -1; }
-            if (a.name > b.name) { return 1; }
-            return 0;
-        });
-
-        return $.map(paymentOptions, function (facet) {
-            var checkbox = $('<input type=checkbox>')
-                .data('facet', facet.name)
-                .attr('id', 'fl-' + facet.name);
-            if (facet.isRefined) checkbox.attr('checked', 'checked');
-            var label = $('<label>').html(facet.name + ' (' + facet.count + ')').attr('for', 'fl-' + facet.name);
-            return $('<li>').append(checkbox).append(label);
-        });
-    });
-}
-
 $('#search-input').on('keyup', function () {
     helper.setQuery($(this).val()).search();
+});
+
+$('#food-type-facet-list').on('click', 'input[type=checkbox]', function () {
+    var facetValue = $(this).data('facet');
+    helper.toggleRefinement('food_type', facetValue).search();
+});
+
+$('#rating-facet-list').on('click', 'input[type=checkbox]', function () {
+    var facetValue = $(this).data('facet');
+    helper.toggleRefinement('stars_int', facetValue).search();
+});
+
+$('#payment-options-facet-list').on('click', 'input[type=checkbox]', function () {
+    var facetValue = $(this).data('facet');
+    helper.toggleRefinement('payment_options', facetValue).search();
 });
 
 $(document).on('click', '#show-more', function () {
@@ -193,4 +186,3 @@ $(document).on('click', '#show-more', function () {
         helper.search();
     }
 });
-
