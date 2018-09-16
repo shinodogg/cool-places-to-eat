@@ -94,6 +94,15 @@ footer {
     -moz-border-radius: 10px;
 }
 
+#food-type-facet-list,
+#rating-facet-list,
+#payment-options-facet-list {
+  float: left;
+  padding: 0 10px;
+  margin: 0;
+  list-style: none;
+}
+
 #cuisine-filter, #stars-filter, #payment-filter {
     float: left;
 }
@@ -138,14 +147,4 @@ footer {
 #show-more-or-less input[type="button"]:hover {
     background: #1C688E;
     color: white;
-}
-
-#food-type-facet-list,
-#rating-facet-list,
-#payment-options-facet-list {
-  width: 100%;
-  float: left;
-  padding: 0 1em;
-  margin: 0;
-  list-style: none;
 }
