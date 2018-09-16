@@ -1,12 +1,11 @@
 <!doctype html>
 <html lang="en">
-
 <head>
   <meta charset="utf-8">
   <link href="style.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600" rel="stylesheet" />
   <title>Cool places to eat!</title>
 </head>
-
 <body>
   <header >
     <input id="search-input" type="text" autocomplete="off" placeholder="Search for Restaurants by Name, Cuisine, Location" />
@@ -28,18 +27,17 @@
   <article>
     <div id="stats"></div>
     <div id="search-result"></div>
-    <div id="show-more-or-less"></div>
+    <div id="show-more-or-less">
+        <input id="show-more" type="button" value="Show More" display/>  
+      display
+    </div>
   </article>
-
+  <footer>
+      By Eiji Shinohara (@shinodogg)
+  </footer>
   <script src="https://cdn.jsdelivr.net/npm/algoliasearch@3/dist/algoliasearchLite.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/algoliasearch-helper@2.26.1/dist/algoliasearch.helper.min.js"></script>
   <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js'></script>
   <script src="index.js"></script>
-
-
-  <footer>
-      By Eiji Shinohara (@shinodogg)
-  </footer>
 </body>
-
 </html>

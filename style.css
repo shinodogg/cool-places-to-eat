@@ -4,6 +4,7 @@ body {
     margin: 0;
     padding: 0;
     background: url('./graphics/background.png');
+    font-family: 'Open Sans', sans-serif;
 }
 
 header, article, aside {
@@ -27,7 +28,6 @@ aside {
     width: 240px;
     margin-left: 40px;
     display:block;
-
 }
 
 article {
@@ -35,7 +35,6 @@ article {
     float:right;
     width:620px;
     margin-right: 40px;
-
 }
 
 footer {
@@ -47,42 +46,54 @@ footer {
 
 #cuisine-filter, #stars-filter, #payment-filter {
     float: left;
-
     width: 240px;
 }
+
+#cuisine-filter label:focus,
+#cuisine-filter label:hover,
+#cuisine-filter label:active {
+    color: blue;
+}
+
+#stars-filter label:focus,
+#stars-filter label:hover,
+#stars-filter label:active {
+    color: green;
+}
+
+#payment-filter label:focus,
+#payment-filter label:hover,
+#payment-filter label:active {
+    color: red;
+}
+
 
 #show-more-or-less {
     text-align: center;
 }
 
 #search-input {
+    background-image: url("./graphics/search.jpeg");
+    background-size: 20px 20px;
+    background-repeat: no-repeat;
+    background-position-x: 98%;
+    background-position-y: center;
     border-color: blue;
     font-size: 14px;
     font-weight: 100;
     width: 80%;
     margin-top: 20px;
     margin-bottom: 20px;
-    padding: 15px}
+    padding: 15px
+}
 
 #food-type-facet-list,
 #rating-facet-list,
-#payment-options-facet-list,
-#container{
+#payment-options-facet-list {
   max-width: 150px;
   width: 100%;
   float: left;
   padding: 0 1em;
   margin: 0;
   list-style: none;
-}
-
-#container {
-  max-width: calc(100% - 150px - 4em);
-}
-#container li {
-  padding: 8px 0;
-}
-
-#container em {
-  background: yellow;
 }
