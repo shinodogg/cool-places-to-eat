@@ -31,9 +31,9 @@ restaurants_list.each do |restaurant|
         info_objectID = info['objectID'].to_s
         if list_objectID == info_objectID then
             restaurant["food_type"] = info['food_type']
-            restaurant["stars_count"] = info['stars_count']
+            restaurant["stars_count"] = info['stars_count'].to_f
             restaurant["stars_int"] = info['stars_count'].to_i
-            restaurant["reviews_count"] = info['reviews_count']
+            restaurant["reviews_count"] = info['reviews_count'].to_i
             restaurant["neighborhood"] = info['neighborhood']
             restaurant["phone_number"] = info['phone_number']
             restaurant["price_range"] = info['price_range']
