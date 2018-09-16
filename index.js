@@ -7,7 +7,6 @@ var parameters = {
 var helper = algoliasearchHelper(client, 'restaurants', parameters);
 
 helper.on('result', function (content) {
-    console.log(content);
     renderFoodTypeFacetList(content);
     renderRatingFacetList(content);
     renderPaymentOptionsFacetList(content);
@@ -26,16 +25,16 @@ if (navigator.geolocation) {
         function (error) {
             switch (error.code) {
                 case 1:
-                    console.log("PERMISSION_DENIED");
+                    // console.log("PERMISSION_DENIED");
                     break;
                 case 2:
-                    console.log("POSITION_UNAVAILABLE");
+                    // console.log("POSITION_UNAVAILABLE");
                     break;
                 case 3:
-                    console.log("TIMEOUT");
+                    // console.log("TIMEOUT");
                     break;
                 default:
-                    alert(error.code);
+                    // alert(error.code);
                     break;
             }
         }
@@ -43,17 +42,20 @@ if (navigator.geolocation) {
 }
 
 function renderHits(content) {
+    var ms = "millisecond";
+    if (content.processingTimeMS !== 1) {
+        ms = ms + "s";
+    }
     $('#stats').html(function () {
-        return '<h5>' + content.nbHits + ' found results found in ' + content.processingTimeMS + ' millisecond(s)' + '<h5>'
+        return '<h4>' + content.nbHits + ' found results found in ' + content.processingTimeMS + ' ' + ms + '<h4>'
     });
-    
     var ua = navigator.userAgent.toLowerCase();
     $('#search-result').html(function () {
         return $.map(content.hits, function (hit) {
             var linkUrl = hit.reserve_url;
             if (ua.indexOf('iphone') > 0 || ua.indexOf('ipod') > 0 || ua.indexOf('android') > 0 && ua.indexOf('mobile') > 0) {
                 linkUrl = hit.mobile_reserve_url;
-            }        
+            }
             return '<a href="' + linkUrl + '" target="_blank" rel="noopener"><table><tr><td rowspan="3"><img src="'
                 + hit.image_url + '" width="125px" /></td><td>'
                 + hit._highlightResult.name.value + '</td></tr><tr><td>'
@@ -112,14 +114,8 @@ function renderRatingFacetList(content) {
     $('#rating-facet-list').html(function () {
         var stars = content.getFacetValues('stars_int');
         stars.sort(function (a, b) {
-            var nameA = a.name;
-            var nameB = b.name;
-            if (nameA > nameB) {
-                return -1;
-            }
-            if (nameA < nameB) {
-                return 1;
-            }
+            if (a.name > b.name) { return -1; }
+            if (a.name < b.name) { return 1; }
             return 0;
         });
         return $.map(stars, function (facet) {
@@ -134,22 +130,32 @@ function renderRatingFacetList(content) {
     });
 }
 
-
 function getRatingStars(num) {
+    var yellowStar = '<img src="graphics/stars-plain.png" width="15px" height="15px" />';
+    var grayStar = '<img src="graphics/star-empty.png" width="15px" height="15px" />';
+    var returnStars = "";
     if (num == 0) {
-        return '<img src="graphics/star-empty.png" width="15px" height="15px" /><img src="graphics/star-empty.png" width="15px" height="15px" /><img src="graphics/star-empty.png" width="15px" height="15px" /><img src="graphics/star-empty.png" width="15px" height="15px" /><img src="graphics/star-empty.png" width="15px" height="15px" />'
+        for (i = 0; i < 5; i++) { returnStars += grayStar; }
+        return returnStars
     } else if (num == 1) {
-        return '<img src="graphics/stars-plain.png" width="15px" height="15px" /><img src="graphics/star-empty.png" width="15px" height="15px" /><img src="graphics/star-empty.png" width="15px" height="15px" /><img src="graphics/star-empty.png" width="15px" height="15px" /><img src="graphics/star-empty.png" width="15px" height="15px" />'
+        for (i = 0; i < 4; i++) { returnStars += grayStar; }
+        return yellowStar + returnStars
     } else if (num == 2) {
-        return '<img src="graphics/stars-plain.png" width="15px" height="15px" /><img src="graphics/stars-plain.png" width="15px" height="15px" /><img src="graphics/star-empty.png" width="15px" height="15px" /><img src="graphics/star-empty.png" width="15px" height="15px" /><img src="graphics/star-empty.png" width="15px" height="15px" />'
+        for (i = 0; i < 2; i++) { returnStars += yellowStar; }
+        for (i = 0; i < 3; i++) { returnStars += grayStar; }
+        return returnStars
     } else if (num == 3) {
-        return '<img src="graphics/stars-plain.png" width="15px" height="15px" /><img src="graphics/stars-plain.png" width="15px" height="15px" /><img src="graphics/stars-plain.png" width="15px" height="15px" /><img src="graphics/star-empty.png" width="15px" height="15px" /><img src="graphics/star-empty.png" width="15px" height="15px" />'
+        for (i = 0; i < 3; i++) { returnStars += yellowStar; }
+        for (i = 0; i < 2; i++) { returnStars += grayStar; }
+        return returnStars
     } else if (num == 4) {
-        return '<img src="graphics/stars-plain.png" width="15px" height="15px" /><img src="graphics/stars-plain.png" width="15px" height="15px" /><img src="graphics/stars-plain.png" width="15px" height="15px" /><img src="graphics/stars-plain.png" width="15px" height="15px" /><img src="graphics/star-empty.png" width="15px" height="15px" />'
+        for (i = 0; i < 4; i++) { returnStars += yellowStar; }
+        return returnStars + grayStar
     } else if (num == 5) {
-        return '<img src="graphics/stars-plain.png" width="15px" height="15px" /><img src="graphics/stars-plain.png" width="15px" height="15px" /><img src="graphics/stars-plain.png" width="15px" height="15px" /><img src="graphics/stars-plain.png" width="15px" height="15px" /><img src="graphics/stars-plain.png" width="15px" height="15px" />'
+        for (i = 0; i < 5; i++) { returnStars += yellowStar; }
+        return returnStars
     } else {
-        return ''
+        return returnStars
     }
 }
 
@@ -157,14 +163,8 @@ function renderPaymentOptionsFacetList(content) {
     $('#payment-options-facet-list').html(function () {
         var paymentOptions = content.getFacetValues('payment_options');
         paymentOptions.sort(function (a, b) {
-            var nameA = a.name;
-            var nameB = b.name;
-            if (nameA < nameB) {
-                return -1;
-            }
-            if (nameA > nameB) {
-                return 1;
-            }
+            if (a.name < b.name) { return -1; }
+            if (a.name > b.name) { return 1; }
             return 0;
         });
 

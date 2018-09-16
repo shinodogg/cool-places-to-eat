@@ -14,7 +14,7 @@ header, article, aside {
 }
 
 header {
-    background-color:blue;
+    background-color: #1C688E;
     text-align : center;
     margin-top: 20px;
     margin-right: 40px;
@@ -54,7 +54,16 @@ footer {
     color: black;
 }
 #search-result a:hover {
-    color: blue;
+    color: #000080;
+}
+#search-result a:hover:after {
+    display: block;
+}
+
+#search-result a:after {
+    position: relative;
+    content: attr(href);
+    display: none;
 }
 
 #cuisine-filter, #stars-filter, #payment-filter {
@@ -64,8 +73,10 @@ footer {
 
 #cuisine-filter label:focus,
 #cuisine-filter label:hover,
-#cuisine-filter label:active {
-    color: blue;
+#cuisine-filter label:active,
+#cuisine-filter input:checked + label {
+    background: #2897C5;
+    color: #ffffff;
 }
 
 #stars-filter label:focus,
@@ -77,9 +88,8 @@ footer {
 #payment-filter label:focus,
 #payment-filter label:hover,
 #payment-filter label:active {
-    color: red;
+    color: green;
 }
-
 
 #show-more-or-less {
     text-align: center;
@@ -91,19 +101,21 @@ footer {
     background-repeat: no-repeat;
     background-position-x: 98%;
     background-position-y: center;
-    border-color: blue;
+    border-color: #1C688E;
     font-size: 14px;
     font-weight: 100;
     width: 80%;
     margin-top: 20px;
     margin-bottom: 20px;
-    padding: 15px
+    padding: 15px;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
 }
 
 #food-type-facet-list,
 #rating-facet-list,
 #payment-options-facet-list {
-  max-width: 150px;
   width: 100%;
   float: left;
   padding: 0 1em;
