@@ -44,6 +44,19 @@ footer {
     font-size: 80%;
 }
 
+#search-result a {
+    text-decoration: none;
+}
+#search-result a:link {
+    color: black;
+}
+#search-result a:visited {
+    color: black;
+}
+#search-result a:hover {
+    color: blue;
+}
+
 #cuisine-filter, #stars-filter, #payment-filter {
     float: left;
     width: 240px;

@@ -46,13 +46,19 @@ function renderHits(content) {
     $('#stats').html(function () {
         return '<h5>' + content.nbHits + ' found results found in ' + content.processingTimeMS + ' millisecond(s)' + '<h5>'
     });
+    
+    var ua = navigator.userAgent.toLowerCase();
     $('#search-result').html(function () {
         return $.map(content.hits, function (hit) {
-            return '<table><tr><td rowspan="3"><img src="'
+            var linkUrl = hit.reserve_url;
+            if (ua.indexOf('iphone') > 0 || ua.indexOf('ipod') > 0 || ua.indexOf('android') > 0 && ua.indexOf('mobile') > 0) {
+                linkUrl = hit.mobile_reserve_url;
+            }        
+            return '<a href="' + linkUrl + '" target="_blank" rel="noopener"><table><tr><td rowspan="3"><img src="'
                 + hit.image_url + '" width="125px" /></td><td>'
                 + hit._highlightResult.name.value + '</td></tr><tr><td>'
                 + hit.stars_count + ' ' + getRatingStars(hit.stars_int) + ' (' + hit.reviews_count + ' reviews)' + '</td></tr><tr><td>'
-                + hit._highlightResult.food_type.value + ' | ' + hit._highlightResult.area.value + ' | ' + hit.price_range + '</td></tr></table>'
+                + hit._highlightResult.food_type.value + ' | ' + hit._highlightResult.area.value + ' | ' + hit.price_range + '</td></tr></table></a>'
         });
     });
     $('#show-more-or-less').html(function () {
