@@ -39,7 +39,7 @@ function renderHits(content) {
         ms = ms + "s";
     }
     $('#stats').html(function () {
-        return '<h4>' + content.nbHits + ' found results found in ' + content.processingTimeMS + ' ' + ms + '<h4>'
+        return '<h4>' + content.nbHits + ' found results found in ' + content.processingTimeMS + ' ' + ms + '<h4>';
     });
     var ua = navigator.userAgent.toLowerCase();
     $('#search-result').html(function () {
@@ -54,19 +54,19 @@ function renderHits(content) {
                 + '<tr><td>' + hit.stars_count + ' ' + getRatingStars(hit.stars_int) + ' (' + hit.reviews_count + ' reviews)' + '</td></tr>'
                 + '<tr><td>' + hit._highlightResult.food_type.value + ' | ' + hit._highlightResult.area.value + ' | ' + hit.price_range + '</td></tr>'
                 + '</tbody></table>'
-                + '</a>'
+                + '</a>';
         });
     });
     $('#show-more-or-less').html(function () {
         if (content.nbHits <= 3) {
-            return ''
+            return '';
         }
         if (Object.keys(content.hits).length == 3) {
-            return '<input id="show-more" type="button" value="Show More" />'
+            return '<input id="show-more" type="button" value="Show More" />';
         } else if (Object.keys(content.hits).length <= 6) {
-            return '<input id="show-more" type="button" value="Show Less" />'
+            return '<input id="show-more" type="button" value="Show Less" />';
         } else {
-            return ''
+            return '';
         }
     });
 }
@@ -77,7 +77,7 @@ function renderFoodTypeFacetList(content) {
         return $.map(content.getFacetValues('food_type'), function (facet) {
             i++;
             if (i > 6) {
-                return false
+                return false;
             }
             var checkbox = getCheckbox(facet);
             if (facet.isRefined) checkbox.attr('checked', 'checked');
@@ -134,26 +134,26 @@ function getRatingStars(num) {
     var returnStars = "";
     if (num == 0) {
         for (i = 0; i < 5; i++) { returnStars += grayStar; }
-        return returnStars
+        return returnStars;
     } else if (num == 1) {
         for (i = 0; i < 4; i++) { returnStars += grayStar; }
-        return yellowStar + returnStars
+        return yellowStar + returnStars;
     } else if (num == 2) {
         for (i = 0; i < 2; i++) { returnStars += yellowStar; }
         for (i = 0; i < 3; i++) { returnStars += grayStar; }
-        return returnStars
+        return returnStars;
     } else if (num == 3) {
         for (i = 0; i < 3; i++) { returnStars += yellowStar; }
         for (i = 0; i < 2; i++) { returnStars += grayStar; }
-        return returnStars
+        return returnStars;
     } else if (num == 4) {
         for (i = 0; i < 4; i++) { returnStars += yellowStar; }
-        return returnStars + grayStar
+        return returnStars + grayStar;
     } else if (num == 5) {
         for (i = 0; i < 5; i++) { returnStars += yellowStar; }
-        return returnStars
+        return returnStars;
     } else {
-        return returnStars
+        return returnStars;
     }
 }
 
