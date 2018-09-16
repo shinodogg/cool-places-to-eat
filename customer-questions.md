@@ -19,7 +19,7 @@ Records are composed of fields, each of that contains one item of information. I
 In terms of Indexing, it is a process to make the data searchable. For example, if you want to search the item above with the word “smart” from a large amount of dataset quickly(like in a few milliseconds), you need to index the data in advance. Algolia can handle the indexing process, so you just need to upload the data to Algolia. You can see following page https://www.algolia.com/doc/guides/indexing/indexing-overview/ to understand indexing in Algolia.
 
 As for Custom Ranking metrics, I recommend to see this youtube video https://youtu.be/ydam9FLJ5Ig. This is easy to understand.
-<iframe width="560" height="315" src="https://www.youtube.com/embed/ydam9FLJ5Ig" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+[![Custom Ranking](http://img.youtube.com/vi/ydam9FLJ5Ig/0.jpg)](http://www.youtube.com/watch?v=ydam9FLJ5Ig)
 Algolia's default ranking is textual relevance. If you want to sort the search results with specific business metrics like sales figures, numbers of endorsement, you can apply that field to the index as a custom ranking. As a side note, the custom ranking field type needs to be numerical or boolean.
 
 ## Question 2
